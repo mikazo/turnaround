@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "HostRunTask.h"
 
 HostRunTask::HostRunTask( const std::string& command ) :
@@ -11,6 +13,13 @@ HostRunTask::~HostRunTask()
 
 bool HostRunTask::executeTask()
 {
-    return false;
+    bool result = false;
+
+    if( 0 == system( m_command.c_str() ) )
+    {
+        result = true;
+    }
+
+    return result;
 }
 
