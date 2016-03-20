@@ -1,0 +1,27 @@
+<turnaround>
+    <task type="host_set_current_directory">
+        <command>c:\dev\project</command>
+    </task>
+    <task type="host_run_program">
+        <command>scons -f SConstruct</command>
+    </task>
+    <task type="vm_revert">
+        <name>Windows 7 x64</name>
+        <snapshot>clean</snapshot>
+    </task>
+    <task type="vm_file_copy">
+        <source>c:\dev\project\target\x64\debug\program.exe</source>
+        <destination>c:\Users\Admin\Desktop</destination>
+    </task>
+    <task type="vm_file_copy">
+        <source>c:\dev\project\target\x64\debug\program.pdb</source>
+        <destination>c:\Users\Admin\Desktop</destination>
+    </task>
+    <task type="vm_file_copy">
+        <source>c:\dev\project\src\main.c</source>
+        <destination>c:\Users\Admin\Desktop</destination>
+    </task>
+    <task type="vm_run_program">
+        <command>c:\Program Files (x86)\Windows Kits\8.1\windbg.exe -c ".reload /f" -srcpath c:\Users\Admin\Desktop -y c:\Users\Admin\Desktop c:\Users\Admin\Desktop\program.exe</command>
+    </task>
+</turnaround>
