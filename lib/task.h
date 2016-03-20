@@ -3,6 +3,11 @@
 
 class Task
 {
+public:
+    Task();
+    virtual ~Task(); 
+
+    virtual bool executeTask() = 0;
 };
 
 #endif

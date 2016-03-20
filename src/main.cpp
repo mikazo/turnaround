@@ -10,7 +10,7 @@ int main( int argc, char** argv )
         std::cout << "Turnaround v0.1" << std::endl;
 
         std::string filename( argv[ 1 ] );
-        std::vector<Task> tasks;
+        std::vector<Task*> tasks;
 
         if( ParseXML( filename, tasks ) )
         {

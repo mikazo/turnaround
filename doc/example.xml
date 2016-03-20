@@ -1,6 +1,6 @@
 <turnaround>
     <task type="host_set_current_directory">
-        <command>c:\dev\project</command>
+        <directory>c:\dev\project</directory>
     </task>
     <task type="host_run_program">
         <command>scons -f SConstruct</command>

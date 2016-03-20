@@ -1,6 +1,11 @@
 Program('bin/turnaround',
         ['lib/xml.cpp',
          'lib/task.cpp',
+         'lib/HostRunTask.cpp',
+         'lib/HostSetDirTask.cpp',
+         'lib/VMFileCopyTask.cpp',
+         'lib/VMRevertTask.cpp',
+         'lib/VMRunTask.cpp',
          'src/main.cpp'],
          CPPPATH=['lib', 'src'],
          LIBS=['xerces-c'])

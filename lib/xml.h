@@ -6,7 +6,7 @@
 
 #include "task.h"
 
-bool ParseXML( const std::string& filename, std::vector<Task>& tasks );
+bool ParseXML( const std::string& filename, std::vector<Task*>& tasks );
 
 #endif
 
