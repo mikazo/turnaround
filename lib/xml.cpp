@@ -13,6 +13,44 @@
 
 using namespace xercesc;
 
+static bool GetTagValue( DOMNode* parentNode, const std::string& tagName, std::string& tagValue )
+{
+    bool result = false;
+    DOMNodeList* childNodes = NULL;
+    DOMNode* childNode = NULL;
+    std::string childNodeName;
+
+    if( parentNode )
+    {
+        childNodes = parentNode->getChildNodes();
+
+        for( int i = 0; i < childNodes->getLength() && !result; i++ )
+        {
+            childNode = childNodes->item( i );
+            if( childNode )
+            {
+                childNodeName = std::string( XMLString::transcode( childNode->getNodeName() ) );
+                if( tagName == childNodeName )
+                {
+                    tagValue = std::string( XMLString::transcode( childNode->getFirstChild()->getNodeValue() ) );
+
+                    result = true;
+                }
+            }
+            else
+            {
+                std::cout << "Invalid child node." << std::endl;
+            }
+        }
+    }
+    else
+    {
+        std::cout << "Invalid parent node." << std::endl;
+    }
+
+    return result;
+}
+
 static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
 {
     bool result = false;
@@ -22,12 +60,12 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
     std::string typeNodeName;
     std::string typeStr;
     Task* newTask = NULL;
-    DOMNode* childNode1 = NULL;
-    DOMNode* childNode2 = NULL;
-    std::string childNodeName1;
-    std::string childNodeName2;
-    std::string childNodeValue1;
-    std::string childNodeValue2;
+    std::string directoryValue;
+    std::string commandValue;
+    std::string nameValue;
+    std::string snapshotValue;
+    std::string sourceValue;
+    std::string destinationValue;
 
     if( "task" == nodeName )
     {
@@ -44,162 +82,68 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
 
                     if( "host_set_current_directory" == typeStr )
                     {
-                        childNode1 = node->getChildNodes()->item( 1 );
-                        if( childNode1 )
+                        if( GetTagValue( node, "directory", directoryValue ) )
                         {
-                            childNodeName1 = std::string( XMLString::transcode( childNode1->getNodeName() ) );
-                            if( "directory" == childNodeName1 )
+                            newTask = new HostSetDirTask( directoryValue );
+                            if( newTask )
                             {
-                                childNodeValue1 = std::string( XMLString::transcode( childNode1->getFirstChild()->getNodeValue() ) );
-                                newTask = new HostSetDirTask( childNodeValue1 );
-                                if( newTask )
-                                {
-                                    tasks.push_back( newTask );
-                                    result = true;
-                                }
+                                tasks.push_back( newTask );
+                                result = true;
                             }
-                            else
-                            {
-                                std::cout << "Invalid child node for type " << typeStr << ": " << childNodeName1 << std::endl;
-                            }
-                        }
-                        else
-                        {
-                            std::cout << "Failed to find first child node for type " << typeStr << std::endl;
                         }
                     }
                     else if( "host_run_program" == typeStr )
                     {
-                        childNode1 = node->getChildNodes()->item( 1 );
-                        if( childNode1 )
+                        if( GetTagValue( node, "command", commandValue ) )
                         {
-                            childNodeName1 = std::string( XMLString::transcode( childNode1->getNodeName() ) );
-                            if( "command" == childNodeName1 )
+                            newTask = new HostRunTask( commandValue );
+                            if( newTask )
                             {
-                                childNodeValue1 = std::string( XMLString::transcode( childNode1->getFirstChild()->getNodeValue() ) );
-                                newTask = new HostRunTask( childNodeValue1 );
-                                if( newTask )
-                                {
-                                    tasks.push_back( newTask );
-                                    result = true;
-                                }
+                                tasks.push_back( newTask );
+                                result = true;
                             }
-                            else
-                            {
-                                std::cout << "Invalid child node for type " << typeStr << ": " << childNodeName1 << std::endl;
-                            }
-                        }
-                        else
-                        {
-                            std::cout << "Failed to find first child node for type " << typeStr << std::endl;
                         }
                     }
                     else if( "vm_revert" == typeStr )
                     {
-                        childNode1 = node->getChildNodes()->item( 1 );
-                        if( childNode1 )
+                        if( GetTagValue( node, "name", nameValue ) )
                         {
-                            childNodeName1 = std::string( XMLString::transcode( childNode1->getNodeName() ) );
-                            if( "name" == childNodeName1 )
+                            if( GetTagValue( node, "snapshot", snapshotValue ) )
                             {
-                                childNodeValue1 = std::string( XMLString::transcode( childNode1->getFirstChild()->getNodeValue() ) );
-
-                                childNode2 = node->getChildNodes()->item( 3 );
-                                if( childNode2 )
-                                {
-                                    childNodeName2 = std::string( XMLString::transcode( childNode2->getNodeName() ) );
-                                    if( "snapshot" == childNodeName2 )
-                                    {
-                                        childNodeValue2 = std::string( XMLString::transcode( childNode2->getFirstChild()->getNodeValue() ) );
-
-                                        newTask = new VMRevertTask( childNodeValue1, childNodeValue2 );
-                                        if( newTask )
-                                        {
-                                            tasks.push_back( newTask );
-                                            result = true;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        std::cout << "Invalid child node for type " << typeStr << ": " << childNodeName2 << std::endl;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                std::cout << "Invalid child node for type " << typeStr << ": " << childNodeName1 << std::endl;
-                            }
-                        }
-                        else
-                        {
-                            std::cout << "Failed to find first child node for type " << typeStr << std::endl;
-                        }
-                    }
-                    else if( "vm_file_copy" == typeStr )
-                    {
-                        childNode1 = node->getChildNodes()->item( 1 );
-                        if( childNode1 )
-                        {
-                            childNodeName1 = std::string( XMLString::transcode( childNode1->getNodeName() ) );
-                            if( "source" == childNodeName1 )
-                            {
-                                childNodeValue1 = std::string( XMLString::transcode( childNode1->getFirstChild()->getNodeValue() ) );
-
-                                childNode2 = node->getChildNodes()->item( 3 );
-                                if( childNode2 )
-                                {
-                                    childNodeName2 = std::string( XMLString::transcode( childNode2->getNodeName() ) );
-                                    if( "destination" == childNodeName2 )
-                                    {
-                                        childNodeValue2 = std::string( XMLString::transcode( childNode2->getFirstChild()->getNodeValue() ) );
-
-                                        newTask = new VMFileCopyTask( childNodeValue1, childNodeValue2 );
-                                        if( newTask )
-                                        {
-                                            tasks.push_back( newTask );
-                                            result = true;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        std::cout << "Invalid child node for type " << typeStr << ": " << childNodeName2 << std::endl;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                std::cout << "Invalid child node for type " << typeStr << ": " << childNodeName1 << std::endl;
-                            }
-                        }
-                        else
-                        {
-                            std::cout << "Failed to find first child node for type " << typeStr << std::endl;
-                        }
-                    }
-                    else if( "vm_run_program" == typeStr )
-                    {
-                        childNode1 = node->getChildNodes()->item( 1 );
-                        if( childNode1 )
-                        {
-                            childNodeName1 = std::string( XMLString::transcode( childNode1->getNodeName() ) );
-                            if( "command" == childNodeName1 )
-                            {
-                                childNodeValue1 = std::string( XMLString::transcode( childNode1->getFirstChild()->getNodeValue() ) );
-                                newTask = new VMRunTask( childNodeValue1 );
+                                newTask = new VMRevertTask( nameValue, snapshotValue );
                                 if( newTask )
                                 {
                                     tasks.push_back( newTask );
                                     result = true;
                                 }
                             }
-                            else
+                        }
+                    }
+                    else if( "vm_file_copy" == typeStr )
+                    {
+                        if( GetTagValue( node, "source", sourceValue ) )
+                        {
+                            if( GetTagValue( node, "destination", destinationValue ) )
                             {
-                                std::cout << "Invalid child node for type " << typeStr << ": " << childNodeName1 << std::endl;
+                                newTask = new VMFileCopyTask( sourceValue, destinationValue );
+                                if( newTask )
+                                {
+                                    tasks.push_back( newTask );
+                                    result = true;
+                                }
                             }
                         }
-                        else
+                    }
+                    else if( "vm_run_program" == typeStr )
+                    {
+                        if( GetTagValue( node, "command", commandValue ) )
                         {
-                            std::cout << "Failed to find first child node for type " << typeStr << std::endl;
+                            newTask = new VMRunTask( commandValue );
+                            if( newTask )
+                            {
+                                tasks.push_back( newTask );
+                                result = true;
+                            }
                         }
                     }
                     else
