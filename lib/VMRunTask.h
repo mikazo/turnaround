@@ -8,7 +8,7 @@
 class VMRunTask : public Task
 {
 public:
-    VMRunTask( const std::string& vmxPath, const std::string& command );
+    VMRunTask( const std::string& vmxPath, const std::string& command, bool waitForCompletion );
     ~VMRunTask(); 
 
     bool executeTask();
@@ -16,6 +16,7 @@ public:
 private:
     std::string m_vmxPath;
     std::string m_command;
+    bool m_waitForCompletion;
 };
 
 #endif

@@ -67,6 +67,7 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
     std::string sourceValue;
     std::string destinationValue;
     std::string copyTypeStr;
+    std::string waitValue;
 
     if( "task" == nodeName )
     {
@@ -152,11 +153,22 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
                         {
                             if( GetTagValue( node, "command", commandValue ) )
                             {
-                                newTask = new VMRunTask( vmxPath, commandValue );
-                                if( newTask )
+                                if( GetTagValue( node, "wait", waitValue ) )
                                 {
-                                    tasks.push_back( newTask );
-                                    result = true;
+                                    if( "true" == waitValue )
+                                    {
+                                        newTask = new VMRunTask( vmxPath, commandValue, true );
+                                    }
+                                    else if( "false" == waitValue )
+                                    {
+                                        newTask = new VMRunTask( vmxPath, commandValue, false );
+                                    }
+
+                                    if( newTask )
+                                    {
+                                        tasks.push_back( newTask );
+                                        result = true;
+                                    }
                                 }
                             }
                         }

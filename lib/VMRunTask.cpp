@@ -5,9 +5,10 @@
 #include <iostream>
 #include <sstream>
 
-VMRunTask::VMRunTask( const std::string& vmxPath, const std::string& command ) :
+VMRunTask::VMRunTask( const std::string& vmxPath, const std::string& command, bool waitForCompletion ) :
     m_vmxPath( vmxPath ),
-    m_command( command )
+    m_command( command ),
+    m_waitForCompletion( waitForCompletion )
 {
 }
 
@@ -97,19 +98,30 @@ bool VMRunTask::executeTask()
 
                 std::cout << "Running program: " << program << " " << arguments << std::endl;
 
-                err = VixJob_Wait( jobHandle, VIX_PROPERTY_NONE );
-
-                Vix_ReleaseHandle( jobHandle );
-
-                if( !VIX_FAILED( err ) )
+                if( m_waitForCompletion )
                 {
-                    std::cout << "Program completed." << std::endl;
+                    std::cout << "Waiting for completion..." << std::endl;
 
-                    result = true;
+                    err = VixJob_Wait( jobHandle, VIX_PROPERTY_NONE );
+
+                    Vix_ReleaseHandle( jobHandle );
+
+                    if( !VIX_FAILED( err ) )
+                    {
+                        std::cout << "Program completed." << std::endl;
+
+                        result = true;
+                    }
+                    else
+                    {
+                        std::cout << "Failed to run program." << std::endl;
+                    }
                 }
                 else
                 {
-                    std::cout << "Failed to run program." << std::endl;
+                    std::cout << "Not waiting for completion." << std::endl;
+
+                    result = true;
                 }
             }
             else

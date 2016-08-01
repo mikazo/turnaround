@@ -35,5 +35,6 @@
     <task type="vm_run_program">
         <vmxpath>"c:\VMware VMs\Windows 7 x86\Windows 7 x86.vmx"</vmxpath>
         <command>c:\Program Files (x86)\Windows Kits\8.1\windbg.exe -c ".reload /f" -srcpath c:\Users\Admin\Desktop -y c:\Users\Admin\Desktop c:\Users\Admin\Desktop\program.exe</command>
+        <wait>false</wait>
     </task>
 </turnaround>
