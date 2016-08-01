@@ -3,13 +3,14 @@ A tool to reduce the turnaround time between code changes and feedback. Turnarou
 
 # Requirements
 Xerces-C++ XML Parser  
+VMware VIX API  
 Scons
 
 # Supported Tasks
-Run a program
-Change the current working directory
-Copy a file into a VMware virtual machine
-Revert a VMware virtual machine
+Run a program  
+Change the current working directory  
+Copy a file into a VMware virtual machine  
+Revert a VMware virtual machine  
 Run a program inside a VMware virtual machine
 
 # Example Workflow

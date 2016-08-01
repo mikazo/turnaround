@@ -8,14 +8,13 @@
 class VMRevertTask : public Task
 {
 public:
-    VMRevertTask( const std::string& name, const std::string& snapshot );
+    VMRevertTask( const std::string& vmxPath );
     ~VMRevertTask(); 
 
     bool executeTask();
 
 private:
-    std::string m_name;
-    std::string m_snapshot;
+    std::string m_vmxPath;
 };
 
 #endif

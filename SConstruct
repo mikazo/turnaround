@@ -11,4 +11,4 @@ env.Program('bin/turnaround',
              'src/main.cpp'],
              CPPPATH=['lib', 'src', 'inc'],
              LIBPATH=['prebuilt'],
-             LIBS=['xerces-c_3'])
+             LIBS=['xerces-c_3', 'VixAllProductsDyn'])

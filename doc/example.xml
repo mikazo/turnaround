@@ -6,8 +6,7 @@
         <command>scons -f SConstruct</command>
     </task>
     <task type="vm_revert">
-        <name>Windows 7 x64</name>
-        <snapshot>clean</snapshot>
+        <vmxpath>"c:\VMware VMs\Windows 7 x86\Windows 7 x86.vmx"</vmxpath>
     </task>
     <task type="vm_file_copy">
         <source>c:\dev\project\target\x64\debug\program.exe</source>

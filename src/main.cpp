@@ -15,6 +15,8 @@ int main( int argc, char** argv )
         if( ParseXML( filename, tasks ) )
         {
             std::cout << "Parsed XML file " << filename << std::endl;
+
+            // TODO: Execute tasks.
         }
         else
         {
