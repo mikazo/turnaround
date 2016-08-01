@@ -95,7 +95,7 @@ bool VMRunTask::executeTask()
                                                      NULL,                  // callback
                                                      NULL );                // client data
 
-                std::cout << "Running program: " << m_command << std::endl;
+                std::cout << "Running program: " << program << " " << arguments << std::endl;
 
                 err = VixJob_Wait( jobHandle, VIX_PROPERTY_NONE );
 

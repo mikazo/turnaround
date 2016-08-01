@@ -66,6 +66,7 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
     std::string snapshotValue;
     std::string sourceValue;
     std::string destinationValue;
+    std::string copyTypeStr;
 
     if( "task" == nodeName )
     {
@@ -118,15 +119,26 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
                     }
                     else if( "vm_file_copy" == typeStr )
                     {
-                        if( GetTagValue( node, "source", sourceValue ) )
+                        if( GetTagValue( node, "type", copyTypeStr ) )
                         {
-                            if( GetTagValue( node, "destination", destinationValue ) )
+                            if( GetTagValue( node, "source", sourceValue ) )
                             {
-                                newTask = new VMFileCopyTask( sourceValue, destinationValue );
-                                if( newTask )
+                                if( GetTagValue( node, "destination", destinationValue ) )
                                 {
-                                    tasks.push_back( newTask );
-                                    result = true;
+                                    if( "HostToVM" == copyTypeStr )
+                                    {
+                                        newTask = new VMFileCopyTask( HOST_TO_VM, sourceValue, destinationValue );
+                                    }
+                                    else if( "VMToHost" == copyTypeStr )
+                                    {
+                                        newTask = new VMFileCopyTask( VM_TO_HOST, sourceValue, destinationValue );
+                                    }
+
+                                    if( newTask )
+                                    {
+                                        tasks.push_back( newTask );
+                                        result = true;
+                                    }
                                 }
                             }
                         }

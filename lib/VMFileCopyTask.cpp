@@ -1,6 +1,7 @@
 #include "VMFileCopyTask.h"
 
-VMFileCopyTask::VMFileCopyTask( const std::string& source, const std::string& destination ) :
+VMFileCopyTask::VMFileCopyTask( FileCopyType fileCopyType, const std::string& source, const std::string& destination ) :
+    m_fileCopyType( fileCopyType ),
     m_source( source ),
     m_destination( destination )
 {
