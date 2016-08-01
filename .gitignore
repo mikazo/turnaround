@@ -34,3 +34,7 @@ bin/*
 *.cpp~
 *.h~
 .gitignore~
+SConstruct~
+inc/*
+*.swp
+*.exp
