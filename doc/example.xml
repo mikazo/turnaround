@@ -7,6 +7,7 @@
     </task>
     <task type="vm_revert">
         <vmxpath>"c:\VMware VMs\Windows 7 x86\Windows 7 x86.vmx"</vmxpath>
+        <name>clean</name>
     </task>
     <task type="vm_file_copy">
         <vmxpath>"c:\VMware VMs\Windows 7 x86\Windows 7 x86.vmx"</vmxpath>

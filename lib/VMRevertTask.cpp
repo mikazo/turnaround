@@ -4,8 +4,9 @@
 
 #include <iostream>
 
-VMRevertTask::VMRevertTask( const std::string& vmxPath ) :
-    m_vmxPath( vmxPath )
+VMRevertTask::VMRevertTask( const std::string& vmxPath, const std::string& snapshotName ) :
+    m_vmxPath( vmxPath ),
+    m_snapshotName( snapshotName )
 {
 }
 
@@ -71,8 +72,7 @@ bool VMRevertTask::executeTask()
             {
                 if( numSnapshots >= 1 )
                 {
-                    // Revert to the newest snapshot.
-                    err = VixVM_GetRootSnapshot( vmHandle, numSnapshots - 1, &snapshotHandle );
+                    err = VixVM_GetNamedSnapshot( vmHandle, m_snapshotName.c_str(), &snapshotHandle );
 
                     if( !VIX_FAILED( err ) )
                     {
@@ -83,7 +83,7 @@ bool VMRevertTask::executeTask()
                                                             NULL,       // Callback
                                                             NULL );     // Client data
 
-                        std::cout << "Reverting virtual machine to latest snapshot..." << std::endl;
+                        std::cout << "Reverting virtual machine to snapshot '" << m_snapshotName << "'..." << std::endl;
 
                         err = VixJob_Wait( jobHandle, VIX_PROPERTY_NONE );
 

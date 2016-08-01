@@ -104,8 +104,6 @@ bool VMRunTask::executeTask()
 
                     err = VixJob_Wait( jobHandle, VIX_PROPERTY_NONE );
 
-                    Vix_ReleaseHandle( jobHandle );
-
                     if( !VIX_FAILED( err ) )
                     {
                         std::cout << "Program completed." << std::endl;
@@ -123,6 +121,8 @@ bool VMRunTask::executeTask()
 
                     result = true;
                 }
+
+                Vix_ReleaseHandle( jobHandle );
             }
             else
             {
