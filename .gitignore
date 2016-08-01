@@ -30,3 +30,7 @@
 .sconsign.dblite
 
 bin/*
+
+*.cpp~
+*.h~
+.gitignore~
