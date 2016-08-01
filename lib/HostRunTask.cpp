@@ -43,6 +43,8 @@ bool HostRunTask::executeTask()
         if( WAIT_OBJECT_0 == WaitForSingleObject( processInfo.hProcess, INFINITE ) )
         {
             std::cout << "Process complete." << std::endl;
+
+            result = true;
         }
         else
         {

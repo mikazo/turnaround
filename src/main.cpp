@@ -18,6 +18,8 @@ int main( int argc, char** argv )
         if( ParseXML( filename, tasks ) )
         {
             std::cout << "Parsed XML file " << filename << std::endl;
+            std::cout << "Found " << tasks.size() << " tasks." << std::endl;
+            std::cout << "-------------------------------------" << std::endl;
 
             for( i = 0; i < tasks.size() && success; i++ )
             {

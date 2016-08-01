@@ -7,6 +7,7 @@
 #include "xml.h"
 #include "HostRunTask.h"
 #include "HostSetDirTask.h"
+#include "HostFileCopyTask.h"
 #include "VMFileCopyTask.h"
 #include "VMRevertTask.h"
 #include "VMRunTask.h"
@@ -91,6 +92,8 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
                             {
                                 tasks.push_back( newTask );
                                 result = true;
+
+                                std::cout << "HostSetDirTask created." << std::endl;
                             }
                         }
                     }
@@ -103,6 +106,25 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
                             {
                                 tasks.push_back( newTask );
                                 result = true;
+
+                                std::cout << "HostRunTask created." << std::endl;
+                            }
+                        }
+                    }
+                    else if( "host_file_copy" == typeStr )
+                    {
+                        if( GetTagValue( node, "source", sourceValue ) )
+                        {
+                            if( GetTagValue( node, "destination", destinationValue ) )
+                            {
+                                newTask = new HostFileCopyTask( sourceValue, destinationValue );
+                                if( newTask )
+                                {
+                                    tasks.push_back( newTask );
+                                    result = true;
+
+                                    std::cout << "HostFileCopyTask created." << std::endl;
+                                }
                             }
                         }
                     }
@@ -115,6 +137,8 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
                             {
                                 tasks.push_back( newTask );
                                 result = true;
+
+                                std::cout << "VMRevertTask created." << std::endl;
                             }
                         }
                     }
@@ -141,6 +165,8 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
                                         {
                                             tasks.push_back( newTask );
                                             result = true;
+                                            
+                                            std::cout << "VMFileCopyTask created." << std::endl;
                                         }
                                     }
                                 }
@@ -168,6 +194,8 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
                                     {
                                         tasks.push_back( newTask );
                                         result = true;
+
+                                        std::cout << "VMRunTask created." << std::endl;
                                     }
                                 }
                             }

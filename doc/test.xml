@@ -1,0 +1,12 @@
+<turnaround>
+    <task type="host_set_current_directory">
+        <directory>C:\Users\Alfie\Documents\GitHub\turnaround\bin</directory>
+    </task>
+    <task type="host_file_copy">
+        <source>turnaround.exe</source>
+        <destination>turnaround2.exe</destination>
+    </task>
+    <task type="host_run_program">
+        <command>ping google.com</command>
+    </task>
+</turnaround>
