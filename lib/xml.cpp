@@ -133,13 +133,16 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
                     }
                     else if( "vm_run_program" == typeStr )
                     {
-                        if( GetTagValue( node, "command", commandValue ) )
+                        if( GetTagValue( node, "vmxpath", vmxPath ) )
                         {
-                            newTask = new VMRunTask( commandValue );
-                            if( newTask )
+                            if( GetTagValue( node, "command", commandValue ) )
                             {
-                                tasks.push_back( newTask );
-                                result = true;
+                                newTask = new VMRunTask( vmxPath, commandValue );
+                                if( newTask )
+                                {
+                                    tasks.push_back( newTask );
+                                    result = true;
+                                }
                             }
                         }
                     }

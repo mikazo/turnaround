@@ -40,11 +40,12 @@ bool VMRevertTask::executeTask()
                        VIX_PROPERTY_JOB_RESULT_HANDLE,
                        &hostHandle,
                        VIX_PROPERTY_NONE );
+
+    Vix_ReleaseHandle( jobHandle );
+
     if( !VIX_FAILED( err ) )
     {
         std::cout << "Successfully connected to VMware Workstation." << std::endl;
-
-        Vix_ReleaseHandle( jobHandle );
 
         jobHandle = VixVM_Open( hostHandle, 
                                 m_vmxPath.c_str(),
@@ -58,11 +59,11 @@ bool VMRevertTask::executeTask()
                            &vmHandle,
                            VIX_PROPERTY_NONE );
 
+        Vix_ReleaseHandle( jobHandle );
+
         if( !VIX_FAILED( err ) )
         {
             std::cout << "Successfully opened virtual machine." << std::endl;
-
-            Vix_ReleaseHandle( jobHandle );
 
             err = VixVM_GetNumRootSnapshots( vmHandle, &numSnapshots );
 
@@ -86,18 +87,16 @@ bool VMRevertTask::executeTask()
 
                         err = VixJob_Wait( jobHandle, VIX_PROPERTY_NONE );
 
+                        Vix_ReleaseHandle( jobHandle );
+
                         if( !VIX_FAILED( err ) )
                         {
-                            Vix_ReleaseHandle( jobHandle );
-
                             std::cout << "Successfully reverted virtual machine to latest snapshot." << std::endl;
 
                             result = true;
                         }
                         else
                         {
-                            Vix_ReleaseHandle( jobHandle );
-
                             std::cout << "Failed to revert to latest snapshot." << std::endl;
                         }
 
@@ -122,8 +121,6 @@ bool VMRevertTask::executeTask()
         }
         else
         {
-            Vix_ReleaseHandle( jobHandle );
-
             std::cout << "Failed to open specified virtual machine." << std::endl;
         }
 

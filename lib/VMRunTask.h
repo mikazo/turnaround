@@ -8,12 +8,13 @@
 class VMRunTask : public Task
 {
 public:
-    VMRunTask( const std::string& command );
+    VMRunTask( const std::string& vmxPath, const std::string& command );
     ~VMRunTask(); 
 
     bool executeTask();
 
 private:
+    std::string m_vmxPath;
     std::string m_command;
 };
 
