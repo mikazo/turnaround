@@ -103,6 +103,8 @@ bool VMRunTask::executeTask()
 
                 if( !VIX_FAILED( err ) )
                 {
+                    std::cout << "Program completed." << std::endl;
+
                     result = true;
                 }
                 else

@@ -9,21 +9,25 @@
         <vmxpath>"c:\VMware VMs\Windows 7 x86\Windows 7 x86.vmx"</vmxpath>
     </task>
     <task type="vm_file_copy">
+        <vmxpath>"c:\VMware VMs\Windows 7 x86\Windows 7 x86.vmx"</vmxpath>
         <type>HostToVM</type>
         <source>c:\dev\project\target\x64\debug\program.exe</source>
         <destination>c:\Users\Admin\Desktop</destination>
     </task>
     <task type="vm_file_copy">
+        <vmxpath>"c:\VMware VMs\Windows 7 x86\Windows 7 x86.vmx"</vmxpath>
         <type>HostToVM</type>
         <source>c:\dev\project\target\x64\debug\program.pdb</source>
         <destination>c:\Users\Admin\Desktop</destination>
     </task>
     <task type="vm_file_copy">
+        <vmxpath>"c:\VMware VMs\Windows 7 x86\Windows 7 x86.vmx"</vmxpath>
         <type>HostToVM</type>
         <source>c:\dev\project\src\main.c</source>
         <destination>c:\Users\Admin\Desktop</destination>
     </task>
     <task type="vm_file_copy">
+        <vmxpath>"c:\VMware VMs\Windows 7 x86\Windows 7 x86.vmx"</vmxpath>
         <type>VMToHost</type>
         <source>c:\Users\Admin\Desktop\result.xml</source>
         <destination>c:\dev\project</destination>

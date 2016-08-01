@@ -119,25 +119,28 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
                     }
                     else if( "vm_file_copy" == typeStr )
                     {
-                        if( GetTagValue( node, "type", copyTypeStr ) )
+                        if( GetTagValue( node, "vmxpath", vmxPath ) )
                         {
-                            if( GetTagValue( node, "source", sourceValue ) )
+                            if( GetTagValue( node, "type", copyTypeStr ) )
                             {
-                                if( GetTagValue( node, "destination", destinationValue ) )
+                                if( GetTagValue( node, "source", sourceValue ) )
                                 {
-                                    if( "HostToVM" == copyTypeStr )
+                                    if( GetTagValue( node, "destination", destinationValue ) )
                                     {
-                                        newTask = new VMFileCopyTask( HOST_TO_VM, sourceValue, destinationValue );
-                                    }
-                                    else if( "VMToHost" == copyTypeStr )
-                                    {
-                                        newTask = new VMFileCopyTask( VM_TO_HOST, sourceValue, destinationValue );
-                                    }
+                                        if( "HostToVM" == copyTypeStr )
+                                        {
+                                            newTask = new VMFileCopyTask( vmxPath, HOST_TO_VM, sourceValue, destinationValue );
+                                        }
+                                        else if( "VMToHost" == copyTypeStr )
+                                        {
+                                            newTask = new VMFileCopyTask( vmxPath, VM_TO_HOST, sourceValue, destinationValue );
+                                        }
 
-                                    if( newTask )
-                                    {
-                                        tasks.push_back( newTask );
-                                        result = true;
+                                        if( newTask )
+                                        {
+                                            tasks.push_back( newTask );
+                                            result = true;
+                                        }
                                     }
                                 }
                             }
