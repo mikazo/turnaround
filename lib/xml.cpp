@@ -70,6 +70,8 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
     std::string copyTypeStr;
     std::string waitValue;
     std::string nameValue;
+    std::string usernameValue;
+    std::string passwordValue;
 
     if( "task" == nodeName )
     {
@@ -148,60 +150,54 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
                     }
                     else if( "vm_file_copy" == typeStr )
                     {
-                        if( GetTagValue( node, "vmxpath", vmxPath ) )
+                        if( GetTagValue( node, "vmxpath", vmxPath ) &&
+                            GetTagValue( node, "username", usernameValue ) &&
+                            GetTagValue( node, "password", passwordValue ) &&
+                            GetTagValue( node, "type", copyTypeStr ) &&
+                            GetTagValue( node, "source", sourceValue ) &&
+                            GetTagValue( node, "destination", destinationValue ) )
                         {
-                            if( GetTagValue( node, "type", copyTypeStr ) )
+                            if( "HostToVM" == copyTypeStr )
                             {
-                                if( GetTagValue( node, "source", sourceValue ) )
-                                {
-                                    if( GetTagValue( node, "destination", destinationValue ) )
-                                    {
-                                        if( "HostToVM" == copyTypeStr )
-                                        {
-                                            newTask = new VMFileCopyTask( vmxPath, HOST_TO_VM, sourceValue, destinationValue );
-                                        }
-                                        else if( "VMToHost" == copyTypeStr )
-                                        {
-                                            newTask = new VMFileCopyTask( vmxPath, VM_TO_HOST, sourceValue, destinationValue );
-                                        }
+                                newTask = new VMFileCopyTask( vmxPath, usernameValue, passwordValue, HOST_TO_VM, sourceValue, destinationValue );
+                            }
+                            else if( "VMToHost" == copyTypeStr )
+                            {
+                                newTask = new VMFileCopyTask( vmxPath, usernameValue, passwordValue, VM_TO_HOST, sourceValue, destinationValue );
+                            }
 
-                                        if( newTask )
-                                        {
-                                            tasks.push_back( newTask );
-                                            result = true;
-                                            
-                                            std::cout << "VMFileCopyTask created." << std::endl;
-                                        }
-                                    }
-                                }
+                            if( newTask )
+                            {
+                                tasks.push_back( newTask );
+                                result = true;
+                                
+                                std::cout << "VMFileCopyTask created." << std::endl;
                             }
                         }
                     }
                     else if( "vm_run_program" == typeStr )
                     {
-                        if( GetTagValue( node, "vmxpath", vmxPath ) )
+                        if( GetTagValue( node, "vmxpath", vmxPath ) &&
+                            GetTagValue( node, "username", usernameValue ) &&
+                            GetTagValue( node, "password", passwordValue ) &&
+                            GetTagValue( node, "command", commandValue ) &&
+                            GetTagValue( node, "wait", waitValue ) )
                         {
-                            if( GetTagValue( node, "command", commandValue ) )
+                            if( "true" == waitValue )
                             {
-                                if( GetTagValue( node, "wait", waitValue ) )
-                                {
-                                    if( "true" == waitValue )
-                                    {
-                                        newTask = new VMRunTask( vmxPath, commandValue, true );
-                                    }
-                                    else if( "false" == waitValue )
-                                    {
-                                        newTask = new VMRunTask( vmxPath, commandValue, false );
-                                    }
+                                newTask = new VMRunTask( vmxPath, usernameValue, passwordValue, commandValue, true );
+                            }
+                            else if( "false" == waitValue )
+                            {
+                                newTask = new VMRunTask( vmxPath, usernameValue, passwordValue, commandValue, false );
+                            }
 
-                                    if( newTask )
-                                    {
-                                        tasks.push_back( newTask );
-                                        result = true;
+                            if( newTask )
+                            {
+                                tasks.push_back( newTask );
+                                result = true;
 
-                                        std::cout << "VMRunTask created." << std::endl;
-                                    }
-                                }
+                                std::cout << "VMRunTask created." << std::endl;
                             }
                         }
                     }

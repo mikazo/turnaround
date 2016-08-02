@@ -5,8 +5,14 @@
 #include <iostream>
 #include <sstream>
 
-VMRunTask::VMRunTask( const std::string& vmxPath, const std::string& command, bool waitForCompletion ) :
+VMRunTask::VMRunTask( const std::string& vmxPath,
+                      const std::string& username,
+                      const std::string& password,
+                      const std::string& command,
+                      bool waitForCompletion ) :
     m_vmxPath( vmxPath ),
+    m_username( username ),
+    m_password( password ),
     m_command( command ),
     m_waitForCompletion( waitForCompletion )
 {
@@ -81,61 +87,83 @@ bool VMRunTask::executeTask()
             {
                 std::cout << "VMware Tools ready." << std::endl;
 
-                std::string program;
-                std::string arguments( "" );
+                jobHandle = VixVM_LoginInGuest( vmHandle,
+                                                m_username.c_str(),
+                                                m_password.c_str(),
+                                                0,          // options
+                                                NULL,       // callback
+                                                NULL );     // client data
 
-                if( std::string::npos != m_command.find( " " ) )
+                std::cout << "Logging in to VM..." << std::endl;
+
+                err = VixJob_Wait( jobHandle, VIX_PROPERTY_NONE );
+
+                Vix_ReleaseHandle( jobHandle );
+
+                if( !VIX_FAILED( err ) )
                 {
-                    // The command line has arguments, so parse them out.
+                    std::cout << "Logged in to VM." << std::endl;
 
-                    std::stringstream commandLine( m_command );
+                    std::string program;
+                    std::string arguments( "" );
 
-                    std::getline( commandLine, program, ' ' );
-
-                    arguments = commandLine.str();
-                }
-                else
-                {
-                    // The command line does not have arguments.
-
-                    program = m_command;
-                }
-
-                jobHandle = VixVM_RunProgramInGuest( vmHandle,
-                                                     program.c_str(),
-                                                     arguments.c_str(),
-                                                     0,                     // options
-                                                     VIX_INVALID_HANDLE,    // prop handle
-                                                     NULL,                  // callback
-                                                     NULL );                // client data
-
-                std::cout << "Running program: " << program << " " << arguments << std::endl;
-
-                if( m_waitForCompletion )
-                {
-                    std::cout << "Waiting for completion..." << std::endl;
-
-                    err = VixJob_Wait( jobHandle, VIX_PROPERTY_NONE );
-
-                    if( !VIX_FAILED( err ) )
+                    if( std::string::npos != m_command.find( " " ) )
                     {
-                        std::cout << "Program completed." << std::endl;
+                        // The command line has arguments, so parse them out.
 
-                        result = true;
+                        std::stringstream commandLine( m_command );
+
+                        std::getline( commandLine, program, ' ' );
+
+                        arguments = commandLine.str();
                     }
                     else
                     {
-                        std::cout << "Failed to run program." << std::endl;
+                        // The command line does not have arguments.
+
+                        program = m_command;
                     }
+
+                    jobHandle = VixVM_RunProgramInGuest( vmHandle,
+                                                         program.c_str(),
+                                                         arguments.c_str(),
+                                                         0,                     // options
+                                                         VIX_INVALID_HANDLE,    // prop handle
+                                                         NULL,                  // callback
+                                                         NULL );                // client data
+
+                    std::cout << "Running program: " << program << " " << arguments << std::endl;
+
+                    if( m_waitForCompletion )
+                    {
+                        std::cout << "Waiting for completion..." << std::endl;
+
+                        err = VixJob_Wait( jobHandle, VIX_PROPERTY_NONE );
+
+                        if( !VIX_FAILED( err ) )
+                        {
+                            std::cout << "Program completed." << std::endl;
+
+                            result = true;
+                        }
+                        else
+                        {
+                            std::cout << "Failed to run program." << std::endl;
+                        }
+                    }
+                    else
+                    {
+                        std::cout << "Not waiting for completion." << std::endl;
+
+                        result = true;
+                    }
+
+                    Vix_ReleaseHandle( jobHandle );
                 }
                 else
                 {
-                    std::cout << "Not waiting for completion." << std::endl;
-
-                    result = true;
+                    std::cout << "Failed to log in to VM." << std::endl;
                 }
-
-                Vix_ReleaseHandle( jobHandle );
             }
             else
             {

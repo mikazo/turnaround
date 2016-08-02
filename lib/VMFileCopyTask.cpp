@@ -5,10 +5,14 @@
 #include <iostream>
 
 VMFileCopyTask::VMFileCopyTask( const std::string& vmxPath,
+                                const std::string& username,
+                                const std::string& password,
                                 FileCopyType fileCopyType,
                                 const std::string& source,
                                 const std::string& destination ) :
     m_vmxPath( vmxPath ),
+    m_username( username ),
+    m_password( password ),
     m_fileCopyType( fileCopyType ),
     m_source( source ),
     m_destination( destination )
@@ -84,30 +88,14 @@ bool VMFileCopyTask::executeTask()
             {
                 std::cout << "VMware Tools ready." << std::endl;
 
-                if( HOST_TO_VM == m_fileCopyType )
-                {
-                    std::cout << "Copying host file " << m_source << " to destination VM file " << m_destination << std::endl;
+                jobHandle = VixVM_LoginInGuest( vmHandle,
+                                                m_username.c_str(),
+                                                m_password.c_str(),
+                                                0,          // options
+                                                NULL,       // callback
+                                                NULL );     // client data
 
-                    jobHandle = VixVM_CopyFileFromHostToGuest( vmHandle,
-                                                               m_source.c_str(),
-                                                               m_destination.c_str(),
-                                                               0,                   // options
-                                                               VIX_INVALID_HANDLE,  // prop list
-                                                               NULL,                // callback
-                                                               NULL );              // client data
-                }
-                else if( VM_TO_HOST == m_fileCopyType )
-                {
-                    std::cout << "Copying VM file " << m_source << " to destination host file " << m_destination << std::endl;
-
-                    jobHandle = VixVM_CopyFileFromGuestToHost( vmHandle,
-                                                               m_source.c_str(),
-                                                               m_destination.c_str(),
-                                                               0,                   // options
-                                                               VIX_INVALID_HANDLE,  // prop list
-                                                               NULL,                // callback
-                                                               NULL );              // client data
-                }
+                std::cout << "Logging in to VM..." << std::endl;
 
                 err = VixJob_Wait( jobHandle, VIX_PROPERTY_NONE );
 
@@ -115,13 +103,51 @@ bool VMFileCopyTask::executeTask()
 
                 if( !VIX_FAILED( err ) )
                 {
-                    std::cout << "File copy complete." << std::endl;
+                    std::cout << "Logged in to VM." << std::endl;
 
-                    result = true;
+                    if( HOST_TO_VM == m_fileCopyType )
+                    {
+                        std::cout << "Copying host file " << m_source << " to destination VM file " << m_destination << std::endl;
+
+                        jobHandle = VixVM_CopyFileFromHostToGuest( vmHandle,
+                                                                   m_source.c_str(),
+                                                                   m_destination.c_str(),
+                                                                   0,                   // options
+                                                                   VIX_INVALID_HANDLE,  // prop list
+                                                                   NULL,                // callback
+                                                                   NULL );              // client data
+                    }
+                    else if( VM_TO_HOST == m_fileCopyType )
+                    {
+                        std::cout << "Copying VM file " << m_source << " to destination host file " << m_destination << std::endl;
+
+                        jobHandle = VixVM_CopyFileFromGuestToHost( vmHandle,
+                                                                   m_source.c_str(),
+                                                                   m_destination.c_str(),
+                                                                   0,                   // options
+                                                                   VIX_INVALID_HANDLE,  // prop list
+                                                                   NULL,                // callback
+                                                                   NULL );              // client data
+                    }
+
+                    err = VixJob_Wait( jobHandle, VIX_PROPERTY_NONE );
+
+                    Vix_ReleaseHandle( jobHandle );
+
+                    if( !VIX_FAILED( err ) )
+                    {
+                        std::cout << "File copy complete." << std::endl;
+
+                        result = true;
+                    }
+                    else
+                    {
+                        std::cout << "Failed to copy file." << std::endl;
+                    }
                 }
                 else
                 {
-                    std::cout << "Failed to copy file." << std::endl;
+                    std::cout << "Failed to log in to VM." << std::endl;
                 }
             }
             else

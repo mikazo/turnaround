@@ -14,13 +14,20 @@ enum FileCopyType
 class VMFileCopyTask : public Task
 {
 public:
-    VMFileCopyTask( const std::string& vmxPath, FileCopyType fileCopyType, const std::string& source, const std::string& destination );
+    VMFileCopyTask( const std::string& vmxPath,
+                    const std::string& username,
+                    const std::string& password,
+                    FileCopyType fileCopyType,
+                    const std::string& source,
+                    const std::string& destination );
     ~VMFileCopyTask(); 
 
     bool executeTask();
 
 private:
     std::string m_vmxPath;
+    std::string m_username;
+    std::string m_password;
     FileCopyType m_fileCopyType;
     std::string m_source;
     std::string m_destination;
