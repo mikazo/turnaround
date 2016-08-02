@@ -127,7 +127,7 @@ bool VMRunTask::executeTask()
                     jobHandle = VixVM_RunProgramInGuest( vmHandle,
                                                          program.c_str(),
                                                          arguments.c_str(),
-                                                         0,                     // options
+                                                         VIX_LOGIN_IN_GUEST_REQUIRE_INTERACTIVE_ENVIRONMENT,
                                                          VIX_INVALID_HANDLE,    // prop handle
                                                          NULL,                  // callback
                                                          NULL );                // client data

@@ -4,6 +4,10 @@
 
 #include <iostream>
 
+#ifdef _WIN32
+#include <Windows.h>
+#endif
+
 VMRevertTask::VMRevertTask( const std::string& vmxPath, const std::string& snapshotName ) :
     m_vmxPath( vmxPath ),
     m_snapshotName( snapshotName )
@@ -91,6 +95,9 @@ bool VMRevertTask::executeTask()
 
                         if( !VIX_FAILED( err ) )
                         {
+                            // Give the VM time to finish reverting and enter a ready state.
+                            Sleep( 5000 );
+
                             std::cout << "Successfully reverted virtual machine to latest snapshot." << std::endl;
 
                             result = true;
