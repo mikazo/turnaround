@@ -78,7 +78,7 @@ bool VMRevertTask::executeTask()
                     {
                         jobHandle = VixVM_RevertToSnapshot( vmHandle,
                                                             snapshotHandle,
-                                                            0, 
+                                                            VIX_VMPOWEROP_LAUNCH_GUI, 
                                                             VIX_INVALID_HANDLE,
                                                             NULL,       // Callback
                                                             NULL );     // Client data

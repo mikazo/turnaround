@@ -25,11 +25,11 @@ int main( int argc, char** argv )
             {
                 Task* task = tasks[ i ];
 
-                std::cout << "Executing task #" << i << std::endl;
+                std::cout << "Executing task #" << ( i + 1 ) << std::endl;
 
                 success = task->executeTask();
 
-                std::cout << "Task #" << i << " complete." << std::endl;
+                std::cout << "Task #" << ( i + 1 ) << " complete." << std::endl;
                 std::cout << "-------------------------------------" << std::endl;
             }
 
@@ -39,7 +39,7 @@ int main( int argc, char** argv )
             }
             else
             {
-                std::cout << "Task execution failed on task #" << i << std::endl;
+                std::cout << "Task execution failed on task #" << ( i - 1 ) << std::endl;
             }
         }
         else
