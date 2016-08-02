@@ -8,7 +8,7 @@
 class HostSetDirTask : public Task
 {
 public:
-    HostSetDirTask( const std::string& directory);
+    HostSetDirTask( const std::string& directory );
     ~HostSetDirTask(); 
 
     bool executeTask();

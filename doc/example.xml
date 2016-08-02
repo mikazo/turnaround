@@ -2,6 +2,9 @@
     <task type="host_set_current_directory">
         <directory>c:\dev\project</directory>
     </task>
+    <task type="host_create_directory">
+        <directory>c:\dev\project\newdir</directory>
+    </task>
     <task type="host_run_program">
         <command>scons -f SConstruct</command>
     </task>

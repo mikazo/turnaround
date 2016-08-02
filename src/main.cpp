@@ -39,7 +39,7 @@ int main( int argc, char** argv )
             }
             else
             {
-                std::cout << "Task execution failed on task #" << ( i - 1 ) << std::endl;
+                std::cout << "Task execution failed on task #" << i << std::endl;
             }
         }
         else

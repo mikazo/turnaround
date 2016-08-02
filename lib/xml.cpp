@@ -7,6 +7,7 @@
 #include "xml.h"
 #include "HostRunTask.h"
 #include "HostSetDirTask.h"
+#include "HostCreateDirTask.h"
 #include "HostFileCopyTask.h"
 #include "HostDeleteTask.h"
 #include "VMFileCopyTask.h"
@@ -99,6 +100,20 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
                                 result = true;
 
                                 std::cout << "HostSetDirTask created." << std::endl;
+                            }
+                        }
+                    }
+                    else if( "host_create_directory" == typeStr )
+                    {
+                        if( GetTagValue( node, "directory", directoryValue ) )
+                        {
+                            newTask = new HostCreateDirTask( directoryValue );
+                            if( newTask )
+                            {
+                                tasks.push_back( newTask );
+                                result = true;
+
+                                std::cout << "HostCreateDirTask created." << std::endl;
                             }
                         }
                     }
