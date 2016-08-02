@@ -15,7 +15,7 @@
         <password>blah</password>
         <type>HostToVM</type>
         <source>c:\dev\project\target\x64\debug\program.exe</source>
-        <destination>c:\Users\Admin\Desktop</destination>
+        <destination>c:\Users\Admin\Desktop\program.exe</destination>
     </task>
     <task type="vm_file_copy">
         <vmxpath>c:\VMware VMs\Windows 7 x86\Windows 7 x86.vmx</vmxpath>
@@ -23,7 +23,7 @@
         <password>blah</password>
         <type>HostToVM</type>
         <source>c:\dev\project\target\x64\debug\program.pdb</source>
-        <destination>c:\Users\Admin\Desktop</destination>
+        <destination>c:\Users\Admin\Desktop\program.pdb</destination>
     </task>
     <task type="vm_file_copy">
         <vmxpath>c:\VMware VMs\Windows 7 x86\Windows 7 x86.vmx</vmxpath>
@@ -31,7 +31,7 @@
         <password>blah</password>
         <type>HostToVM</type>
         <source>c:\dev\project\src\main.c</source>
-        <destination>c:\Users\Admin\Desktop</destination>
+        <destination>c:\Users\Admin\Desktop\main.c</destination>
     </task>
     <task type="vm_file_copy">
         <vmxpath>c:\VMware VMs\Windows 7 x86\Windows 7 x86.vmx</vmxpath>
@@ -39,7 +39,7 @@
         <password>blah</password>
         <type>VMToHost</type>
         <source>c:\Users\Admin\Desktop\result.xml</source>
-        <destination>c:\dev\project</destination>
+        <destination>c:\dev\project\result.xml</destination>
     </task>
     <task type="vm_run_program">
         <vmxpath>c:\VMware VMs\Windows 7 x86\Windows 7 x86.vmx</vmxpath>
