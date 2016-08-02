@@ -8,6 +8,7 @@
 #include "HostRunTask.h"
 #include "HostSetDirTask.h"
 #include "HostFileCopyTask.h"
+#include "HostDeleteTask.h"
 #include "VMFileCopyTask.h"
 #include "VMRevertTask.h"
 #include "VMRunTask.h"
@@ -72,6 +73,7 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
     std::string nameValue;
     std::string usernameValue;
     std::string passwordValue;
+    std::string pathValue;
 
     if( "task" == nodeName )
     {
@@ -128,6 +130,20 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
 
                                     std::cout << "HostFileCopyTask created." << std::endl;
                                 }
+                            }
+                        }
+                    }
+                    else if( "host_delete" == typeStr )
+                    {
+                        if( GetTagValue( node, "path", pathValue ) )
+                        {
+                            newTask = new HostDeleteTask( pathValue );
+                            if( newTask )
+                            {
+                                tasks.push_back( newTask );
+                                result = true;
+
+                                std::cout << "HostDeleteTask created." << std::endl;
                             }
                         }
                     }
@@ -221,9 +237,9 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
             std::cout << "Failed to get task node attributes." << std::endl;
         }
     }
-    else if( "#text" == nodeName )
+    else if( "#text" == nodeName || "#comment" == nodeName )
     {
-        // Empty text node, skip it.
+        // Empty text node or comment, skip it.
         result = true;
     }
     else

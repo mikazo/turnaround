@@ -6,10 +6,11 @@ env.Program('bin/turnaround',
              'lib/HostRunTask.cpp',
              'lib/HostSetDirTask.cpp',
              'lib/HostFileCopyTask.cpp',
+             'lib/HostDeleteTask.cpp',
              'lib/VMFileCopyTask.cpp',
              'lib/VMRevertTask.cpp',
              'lib/VMRunTask.cpp',
              'src/main.cpp'],
              CPPPATH=['lib', 'src', 'inc'],
              LIBPATH=['prebuilt'],
-             LIBS=['xerces-c_3', 'VixAllProductsDyn'])
+             LIBS=['xerces-c_3', 'VixAllProductsDyn', 'shell32', 'shlwapi'])

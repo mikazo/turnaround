@@ -48,4 +48,12 @@
         <command>c:\Program Files (x86)\Windows Kits\8.1\windbg.exe -c ".reload /f" -srcpath c:\Users\Admin\Desktop -y c:\Users\Admin\Desktop c:\Users\Admin\Desktop\program.exe</command>
         <wait>false</wait>
     </task>
+    <!-- Delete a file -->
+    <task type="host_delete">
+        <path>c:\Users\Admin\Desktop\result.xml</path>
+    </task>
+    <!-- Delete a directory -->
+    <task type="host_delete">
+        <path>c:\Users\Admin\Desktop\stuff</path>
+    </task>
 </turnaround>

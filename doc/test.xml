@@ -9,4 +9,15 @@
     <task type="host_run_program">
         <command>ping google.com</command>
     </task>
+    <!-- Delete a file -->
+    <task type="host_delete">
+        <path>C:\Users\Alfie\Documents\GitHub\turnaround\bin\blah.txt</path>
+    </task>
+    <!-- Delete a directory -->
+    <task type="host_delete">
+        <path>C:\Users\Alfie\Documents\GitHub\turnaround\bin\things</path>
+    </task>
+    <task type="host_delete">
+        <path>Users\Alfie\Documents\GitHub\turnaround\bin\blah.txt</path>
+    </task>
 </turnaround>
