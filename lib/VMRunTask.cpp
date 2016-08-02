@@ -81,12 +81,25 @@ bool VMRunTask::executeTask()
             {
                 std::cout << "VMware Tools ready." << std::endl;
 
-                std::stringstream commandLine( m_command );
                 std::string program;
+                std::string arguments( "" );
 
-                std::getline( commandLine, program, ' ' );
+                if( std::string::npos != m_command.find( " " ) )
+                {
+                    // The command line has arguments, so parse them out.
 
-                std::string arguments( commandLine.str() );
+                    std::stringstream commandLine( m_command );
+
+                    std::getline( commandLine, program, ' ' );
+
+                    arguments = commandLine.str();
+                }
+                else
+                {
+                    // The command line does not have arguments.
+
+                    program = m_command;
+                }
 
                 jobHandle = VixVM_RunProgramInGuest( vmHandle,
                                                      program.c_str(),
