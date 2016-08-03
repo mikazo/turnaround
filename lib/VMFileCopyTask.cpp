@@ -74,7 +74,7 @@ bool VMFileCopyTask::executeTask()
             std::cout << "Successfully opened virtual machine." << std::endl;
 
             jobHandle = VixVM_WaitForToolsInGuest( vmHandle,
-                                                   30,      // seconds to timeout
+                                                   10,      // seconds to timeout
                                                    NULL,    // callback
                                                    NULL );  // client data
 
@@ -152,7 +152,7 @@ bool VMFileCopyTask::executeTask()
             }
             else
             {
-                std::cout << "Failed to wait for VMware Tools." << std::endl;
+                std::cout << "Failed to wait for VMware Tools. Try restarting the VMware Tools service in the guest VM." << std::endl;
             }
         }
         else

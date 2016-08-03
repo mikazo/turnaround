@@ -90,7 +90,7 @@ bool VMRunTask::executeTask()
                 jobHandle = VixVM_LoginInGuest( vmHandle,
                                                 m_username.c_str(),
                                                 m_password.c_str(),
-                                                0,          // options
+                                                VIX_LOGIN_IN_GUEST_REQUIRE_INTERACTIVE_ENVIRONMENT,
                                                 NULL,       // callback
                                                 NULL );     // client data
 
@@ -168,7 +168,7 @@ bool VMRunTask::executeTask()
             }
             else
             {
-                std::cout << "Failed to wait for VMware Tools." << std::endl;
+                std::cout << "Failed to wait for VMware Tools. Try restarting the VMware Tools service in the guest VM." << std::endl;
             }
         }
         else
