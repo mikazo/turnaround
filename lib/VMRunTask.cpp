@@ -106,8 +106,9 @@ bool VMRunTask::executeTask()
 
                     std::string program;
                     std::string arguments( "" );
+                    size_t spacePos = m_command.find( " " );
 
-                    if( std::string::npos != m_command.find( " " ) )
+                    if( std::string::npos != spacePos )
                     {
                         // The command line has arguments, so parse them out.
 
@@ -115,7 +116,7 @@ bool VMRunTask::executeTask()
 
                         std::getline( commandLine, program, ' ' );
 
-                        arguments = commandLine.str();
+                        arguments = commandLine.str().substr( spacePos + 1, std::string::npos );
                     }
                     else
                     {
