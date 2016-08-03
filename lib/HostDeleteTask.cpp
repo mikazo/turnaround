@@ -10,6 +10,8 @@
 
 #include "HostDeleteTask.h"
 
+#define DE_INVALIDFILES 0x7c
+
 HostDeleteTask::HostDeleteTask( const std::string& path ) :
     m_path( path )
 {
@@ -58,7 +60,7 @@ bool HostDeleteTask::executeTask()
             }
 
             retCode = SHFileOperation( &operation );
-            if( 0 == retCode )
+            if( 0 == retCode || DE_INVALIDFILES == retCode )
             {
                 result = true;
 

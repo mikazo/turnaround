@@ -102,6 +102,10 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
                                 std::cout << "HostSetDirTask created." << std::endl;
                             }
                         }
+                        else
+                        {
+                            std::cout << "Error parsing host_set_current_directory task." << std::endl;
+                        }
                     }
                     else if( "host_create_directory" == typeStr )
                     {
@@ -115,6 +119,10 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
 
                                 std::cout << "HostCreateDirTask created." << std::endl;
                             }
+                        }
+                        else
+                        {
+                            std::cout << "Error parsing host_create_directory task." << std::endl;
                         }
                     }
                     else if( "host_run_program" == typeStr )
@@ -130,22 +138,28 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
                                 std::cout << "HostRunTask created." << std::endl;
                             }
                         }
+                        else
+                        {
+                            std::cout << "Error parsing host_run_program task." << std::endl;
+                        }
                     }
                     else if( "host_file_copy" == typeStr )
                     {
-                        if( GetTagValue( node, "source", sourceValue ) )
+                        if( GetTagValue( node, "source", sourceValue ) &&
+                            GetTagValue( node, "destination", destinationValue ) )
                         {
-                            if( GetTagValue( node, "destination", destinationValue ) )
+                            newTask = new HostFileCopyTask( sourceValue, destinationValue );
+                            if( newTask )
                             {
-                                newTask = new HostFileCopyTask( sourceValue, destinationValue );
-                                if( newTask )
-                                {
-                                    tasks.push_back( newTask );
-                                    result = true;
+                                tasks.push_back( newTask );
+                                result = true;
 
-                                    std::cout << "HostFileCopyTask created." << std::endl;
-                                }
+                                std::cout << "HostFileCopyTask created." << std::endl;
                             }
+                        }
+                        else
+                        {
+                            std::cout << "Error parsing host_file_copy task." << std::endl;
                         }
                     }
                     else if( "host_delete" == typeStr )
@@ -160,6 +174,10 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
 
                                 std::cout << "HostDeleteTask created." << std::endl;
                             }
+                        }
+                        else
+                        {
+                            std::cout << "Error parsing host_delete task." << std::endl;
                         }
                     }
                     else if( "vm_revert" == typeStr )
@@ -177,6 +195,10 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
                                     std::cout << "VMRevertTask created." << std::endl;
                                 }
                             }
+                        }
+                        else
+                        {
+                            std::cout << "Error parsing vm_revert task." << std::endl;
                         }
                     }
                     else if( "vm_file_copy" == typeStr )
@@ -205,6 +227,10 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
                                 std::cout << "VMFileCopyTask created." << std::endl;
                             }
                         }
+                        else
+                        {
+                            std::cout << "Error parsing vm_file_copy task." << std::endl;
+                        }
                     }
                     else if( "vm_run_program" == typeStr )
                     {
@@ -230,6 +256,10 @@ static bool ParseNode( DOMNode* node, std::vector<Task*>& tasks )
 
                                 std::cout << "VMRunTask created." << std::endl;
                             }
+                        }
+                        else
+                        {
+                            std::cout << "Error parsing vm_run_program task." << std::endl;
                         }
                     }
                     else
